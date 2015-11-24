@@ -20,7 +20,6 @@ def to_text(value, encoding='utf-8'):
 
 
 def ensure_unicode(func):
-
     def _ensure_unicode(l):
         if isinstance(l, (tuple, list)):
             return [_ensure_unicode(i) for i in l]

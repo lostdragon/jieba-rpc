@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 from __future__ import with_statement
 import os
-import sys
 from setuptools import setup, find_packages
 
 readme = 'README.md'
@@ -11,14 +10,10 @@ with open(readme) as f:
     long_description = f.read()
 
 requirements = [
-    'msgpack-rpc-python',
+    'zerorpc',
     'six',
+    'jieba'
 ]
-
-if sys.version_info[0] < 3:
-    requirements.append('jieba')
-else:
-    requirements.append('jieba3k')
 
 setup(
     name='jieba-rpc',

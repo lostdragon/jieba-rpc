@@ -1,16 +1,16 @@
 jieba-rpc
 =============
-[![Build Status](https://travis-ci.org/messense/jieba-rpc.svg?branch=master)](https://travis-ci.org/messense/jieba-rpc)
+[![Build Status](https://travis-ci.org/lostdragon/jieba-rpc.svg?branch=master)](https://travis-ci.org/lostdragon/jieba-rpc)
 
-Simple [jieba](https://github.com/fxsjy/jieba) RPC server based on [msgpack-rpc-python](https://github.com/msgpack-rpc/msgpack-rpc-python).
+Simple [jieba](https://github.com/fxsjy/jieba) RPC server based on [zerorpc](https://github.com/0rpc/zerorpc-python).
 
 
 ## Installation
 
-Install `jieba-rpc` using `pip`:
+Install `jieba-rpc`:
 
 ```bash
-pip install jieba-rpc
+python setup.py install
 ```
 
 
@@ -19,7 +19,7 @@ pip install jieba-rpc
 You can start a simple jieba RPC server by executing:
 
 ```bash
-python -m jiebarpc localhost:8888
+python -m jiebarpc tcp://127.0.0.1:8888
 ```
 
 Or if you wish to customize it using codes:
@@ -31,23 +31,22 @@ from __future__ import absolute_import, unicode_literals
 from jiebarpc import JiebaRPCServer, JiebaRPCDispatcher
 
 
-def main(host, port):
+def main(endpoint):
     server = JiebaRPCServer(JiebaRPCDispatcher())
-    server.listen(host, port)
-    server.start()
+    server.bind(endpoint)
+    server.run()
     return 0
 
 
 if __name__ == '__main__':
     import sys
 
-    if len(sys.argv) != 3:
-        print('Usage: %s host port' % sys.argv[0])
+    if len(sys.argv) != 2:
+        print('Usage: %s tcp://host:port' % sys.argv[0])
         sys.exit(1)
 
-    host = sys.argv[1]
-    port = int(sys.argv[2])
-    sys.exit(main(host, port))
+    endpoint = sys.argv[1]
+    sys.exit(main(endpoint))
 ```
 
 

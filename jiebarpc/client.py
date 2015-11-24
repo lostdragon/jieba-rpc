@@ -1,22 +1,16 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
-import msgpackrpc
-
+import zerorpc
 from jiebarpc.utils import ensure_unicode
 
 
-class JiebaRPCClient(msgpackrpc.Client):
-
-    def __init__(self, host, port, *args, **kwargs):
-        address = msgpackrpc.Address(host, port)
-        super(JiebaRPCClient, self).__init__(address, *args, **kwargs)
-
+class JiebaRPCClient(zerorpc.Client):
     @ensure_unicode
-    def call(self, method, *args):
-        return super(JiebaRPCClient, self).call(method, *args)
+    def __call__(self, method, *args, **kargs):
+        return super(JiebaRPCClient, self).__call__(method, *args)
 
     def cut(self, sentence, cut_all=False, HMM=True):
-        return self.call(
+        return self.__call__(
             'cut',
             sentence,
             cut_all,
@@ -24,13 +18,13 @@ class JiebaRPCClient(msgpackrpc.Client):
         )
 
     def cut_for_search(self, sentence):
-        return self.call(
+        return self.__call__(
             'cut_for_search',
             sentence
         )
 
     def extract_tags(self, sentence, topK=20, withWeight=False):
-        return self.call(
+        return self.__call__(
             'extract_tags',
             sentence,
             topK,
@@ -38,7 +32,7 @@ class JiebaRPCClient(msgpackrpc.Client):
         )
 
     def textrank(self, sentence, topK=10, withWeight=False):
-        return self.call(
+        return self.__call__(
             'textrank',
             sentence,
             topK,
@@ -46,22 +40,23 @@ class JiebaRPCClient(msgpackrpc.Client):
         )
 
     def posseg(self, sentence, HMM=True):
-        return self.call(
+        return self.__call__(
             'posseg',
             sentence,
             HMM
         )
 
     def tokenize(self, sentence, mode='default', HMM=True):
-        return self.call(
+        return self.__call__(
             'tokenize',
             sentence,
             mode,
             HMM
         )
 
+
 if __name__ == '__main__':
-    client = JiebaRPCClient('localhost', 4444)
+    client = JiebaRPCClient("tcp://localhost:4242")
     print(client.cut('测试分词'))
     print(client.cut_for_search('测试分词'))
     print(client.extract_tags('测试分词'))

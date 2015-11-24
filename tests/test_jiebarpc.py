@@ -4,28 +4,25 @@ import os
 import time
 import unittest
 from subprocess import Popen, PIPE
-
 from jiebarpc import JiebaRPCClient
 
 
 class JiebaRPCTestCase(unittest.TestCase):
-
-    HOST = 'localhost'
-    PORT = '9999'
+    ENDPOINT = 'tcp://127.0.0.1:9999'
     SENTENCE = '小明硕士毕业于中国科学院计算所，后在日本京都大学深'
 
     def setUp(self):
         curr_dir = os.path.abspath(os.path.dirname(__file__))
         server_file = os.path.join(curr_dir, 'server.py')
         self.server = Popen(
-            ['python', server_file, self.HOST, self.PORT],
+            ['python', server_file, self.ENDPOINT],
             shell=False,
             stdin=PIPE,
             stderr=PIPE,
             close_fds=True,
         )
-        time.sleep(10)
-        self.client = JiebaRPCClient(self.HOST, int(self.PORT))
+        time.sleep(3)
+        self.client = JiebaRPCClient(self.ENDPOINT)
 
     def tearDown(self):
         try:
